@@ -1,7 +1,23 @@
+import { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import axios from 'axios';
+
+const fetchData = async () => {
+  try  {
+    const res = await axios.get('http://localhost:8000');
+    console.log(res.data);
+  } catch (err) {
+    console.error("Error fetching data", err)
+    return err;
+  }
+}
 
 function App() {
+  useEffect(() => {
+    fetchData();
+  }, []);
+    
   return (
     <div className="App">
       <header className="App-header">
