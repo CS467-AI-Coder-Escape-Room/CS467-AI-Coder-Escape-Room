@@ -3,12 +3,11 @@ This is the Oregon State University capstone project repo for Ryan Johns, Heathe
 
 # React Escape Room AI Explorer
 
-React Escape Room AI Explorer is a web application built using React, Three.js, Express.js, and MongoDB, designed to create a unique escape room experience that compares and utilizes different AI tools to enhance user interactions and solve puzzles. Our goal is to demonstrate how AI technologies can be integrated into a gaming context, providing an immersive and challenging experience for users.
+React Escape Room AI Explorer is a web application built using React, Three.js, Express.js, and MongoDB, designed to create a unique escape room experience that was built by comparing and utilizing different generative AI tools such as ChatGPT-3.5 and 4, Bard, GitHub CoPilot, AWS CodeWhisperer, and DALL-E image based generators to name a few. The primary goal of this project is to demonstrate how AI technologies can help developers, both experience and inexperienced, be more productive. The secondary goal is to create a fun and engaging experience for the user.
 
 ## Features
 
 - Interactive 3D escape room environment built using React and Three.js.
-- Integration of various AI tools to solve puzzles and facilitate user interactions.
 - User authentication and progress tracking using Express.js and MongoDB.
 - Sleek and responsive design for seamless gaming experience across devices.
 - Leaderboard to showcase top players and encourage friendly competition.
