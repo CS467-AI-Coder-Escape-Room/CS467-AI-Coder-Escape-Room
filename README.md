@@ -3,12 +3,11 @@ This is the Oregon State University capstone project repo for Ryan Johns, Heathe
 
 # React Escape Room AI Explorer
 
-React Escape Room AI Explorer is a web application built using React, Three.js, Express.js, and MongoDB, designed to create a unique escape room experience that compares and utilizes different AI tools to enhance user interactions and solve puzzles. Our goal is to demonstrate how AI technologies can be integrated into a gaming context, providing an immersive and challenging experience for users.
+React Escape Room AI Explorer is a web application built using React, Three.js, Express.js, and MongoDB, designed to create a unique escape room experience that was built by comparing and utilizing different generative AI tools such as ChatGPT-3.5 and 4, Bard, GitHub CoPilot, AWS CodeWhisperer, and DALL-E image based generators to name a few. The primary goal of this project is to demonstrate how AI technologies can help developers, junior and senior, be more productive. The secondary goal is to create a fun and engaging experience for everyone.
 
 ## Features
 
 - Interactive 3D escape room environment built using React and Three.js.
-- Integration of various AI tools to solve puzzles and facilitate user interactions.
 - User authentication and progress tracking using Express.js and MongoDB.
 - Sleek and responsive design for seamless gaming experience across devices.
 - Leaderboard to showcase top players and encourage friendly competition.
@@ -57,25 +56,21 @@ cd CS467-AI-Coder-Escape-Room
     npm start
     ```
 
-The React app will be available at http://localhost:3000, and the Express.js backend will run on http://localhost:5000.
+The React app will be available at http://localhost:3000, and the Express.js backend will run on http://localhost:8000.
 
-## Usage
-Visit http://localhost:3000 to start the escape room experience.
-Register an account or sign in to track your progress and compete on the leaderboard.
-Navigate through the 3D environment and interact with various AI-powered tools and puzzles.
-Complete the escape room by solving all the puzzles and challenges, using the integrated AI tools.
-Check the leaderboard to compare your performance with other players.
+## How to Play
+To play the game, simply visit the website and click on the "Start Game" button to start the escape room experience. You will then be prompted to create a username and password. Once you have created a username and password, you can start playing the game. The game is divided into a series of rooms. Each room contains a puzzle that you must solve in order to progress to the next room. The puzzles are designed to be challenging, but they are also fair. Complete the escape room by solving all the puzzles and challenges. After you've escaped, check the leaderboard to compare your performance with other players.
 
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
 We welcome contributions from the community! If you would like to contribute to the project, please follow these steps:
+
+## Contributing
 Fork the repository.
 Create a new branch for your changes.
 Implement your changes and push them to your forked repository.
 Create a pull request with a clear description of your changes.
 
-## License
-This project is licensed under the MIT License - see the LICENSE file for details.
 
 
-## How to Play
-To play the game, simply visit the website and click on the "Start Game" button. You will then be prompted to create a username and password. Once you have created a username and password, you can start playing the game.
-The game is divided into a series of rooms. Each room contains a puzzle that you must solve in order to progress to the next room. The puzzles are designed to be challenging, but they are also fair
+
