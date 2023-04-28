@@ -2,12 +2,33 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+import * as THREE from 'three'
+import { Canvas } from '@react-three/fiber'
+import EscapeRoom from './EscapeRoom';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
   <React.StrictMode>
-    <App />
+    {/* <App /> */}
+    <Canvas
+      className="webgl"
+      onCreated={({ gl }) => {
+        gl.shadowMap.enabled = true
+        gl.shadowMap.type = THREE.PCFSoftShadowMap
+      }}
+      camera={{
+        position: [-3, 6, 3],
+        rotation: [0, -1, 0],
+        fov: 75,
+        near: 0.1,
+        far: 50
+      }}
+      resize={{ scroll: false }}
+    >
+      <EscapeRoom />
+    </Canvas>
   </React.StrictMode>
 );
 
