@@ -28,7 +28,7 @@ import axios from "axios";
 const TestRead = async () => {
   // Find document
   try {
-    const response = await axios.get("http://localhost:8000/database/leaderboard");
+    const response = await axios.get("http://cs-467-ai-coder-escape-room-back-env-1.eba-qrsmz3c8.us-east-2.elasticbeanstalk.com/database/leaderboard");
     console.log(response.data);
   } catch (error) {
     console.error("Error fetching data: ", error);
