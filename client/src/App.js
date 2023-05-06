@@ -10,7 +10,7 @@ import axios from "axios";
 //   // Create a new document
 //   try {
 //     const response = await axios.post(
-//       "http://localhost:8000/database/create",
+//       "https://ai-coder-server.superindependentmedia.com/database/create",
 //       document,
 //       {
 //         headers: {
