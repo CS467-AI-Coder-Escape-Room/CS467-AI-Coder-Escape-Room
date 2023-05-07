@@ -12,16 +12,26 @@ React Escape Room AI Explorer is a web application built using React, Three.js, 
 
 ## Installation and Setup
 1. Clone the repository
+    ## For the server (React app)
+    ```bash
+    git clone https://github.com/yourusername/CS467-AI-Coder-Escape-Room.git
+    ```
 
-```bash
-git clone https://github.com/yourusername/CS467-AI-Coder-Escape-Room.git
-```
+    ## For the server (React app)
+    ```bash
+    git clone https://github.com/CS467-AI-Coder-Escape-Room/CS467-AI-Coder-Escape-Room-Backend.git
+    ```
 
 2. Change into the project directory:
+    ## For the server (React app)
+    ```bash
+    cd CS467-AI-Coder-Escape-Room
+    ```
 
-```bash
-cd CS467-AI-Coder-Escape-Room
-```
+    ## For the server (React app)
+    ```bash
+    cd CS467-AI-Coder-Escape-Room-Backend
+    ```
 
 3. Install dependencies:
     ## For the client (React app)
@@ -32,7 +42,7 @@ cd CS467-AI-Coder-Escape-Room
 
     ## For the server (Express app)
     ```bash
-    cd ../server
+    cd ./server
     npm install
     ```
 
@@ -40,6 +50,8 @@ cd CS467-AI-Coder-Escape-Room
 
 * For a local MongoDB database, follow the instructions [here](https://docs.mongodb.com/manual/installation/) and update the connectionString in the server's .env file to match your local database.
 * For a MongoDB Atlas database, follow the instructions [here](https://docs.atlas.mongodb.com/getting-started/) and update the connectionString in the server's .env file to match your Atlas database.
+
+Stor your MongoDB connection string to a constant variable called MONGODB_URI stored in a .env file in the server directory.
 
 5. Start the development servers:
     ## For the client (React app)
@@ -50,11 +62,11 @@ cd CS467-AI-Coder-Escape-Room
 
     ## For the server (Express app)
     ```bash
-    cd ../server
+    cd ./server
     npm start
     ```
 
-The React app will be available at http://localhost:3000, and the Express.js backend will run on http://localhost:8000.
+The React app will be available at http://localhost:3000, and the Express.js backend will run in process.env.PORT or by default  http://localhost:8000.
 
 ## How to Play
 To play the game, simply visit the website and click on the "Start Game" button to start the escape room experience. You will then be prompted to create a username and password. Once you have created a username and password, you can start playing the game. The game is divided into a series of rooms. Each room contains a puzzle that you must solve in order to progress to the next room. The puzzles are designed to be challenging, but they are also fair. Complete the escape room by solving all the puzzles and challenges. After you've escaped, check the leaderboard to compare your performance with other players.
