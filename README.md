@@ -51,7 +51,7 @@ React Escape Room AI Explorer is a web application built using React, Three.js, 
 * For a local MongoDB database, follow the instructions [here](https://docs.mongodb.com/manual/installation/) and update the connectionString in the server's .env file to match your local database.
 * For a MongoDB Atlas database, follow the instructions [here](https://docs.atlas.mongodb.com/getting-started/) and update the connectionString in the server's .env file to match your Atlas database.
 
-Stor your MongoDB connection string to a constant variable called MONGODB_URI stored in a .env file in the server directory.
+Store your MongoDB connection string in a environment variable called MONGODB_URI in a .env file in the server directory.
 
 5. Start the development servers:
     ## For the client (React app)
