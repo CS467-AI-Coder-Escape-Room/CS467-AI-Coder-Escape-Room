@@ -17,20 +17,10 @@ React Escape Room AI Explorer is a web application built using React, Three.js, 
     git clone https://github.com/yourusername/CS467-AI-Coder-Escape-Room.git
     ```
 
-    ## For the server (Express app)
-    ```bash
-    git clone https://github.com/CS467-AI-Coder-Escape-Room/CS467-AI-Coder-Escape-Room-Backend.git
-    ```
-
 2. Change into the project directory:
     ## For the client (React app)
     ```bash
     cd CS467-AI-Coder-Escape-Room
-    ```
-
-    ## For the server (Express app)
-    ```bash
-    cd CS467-AI-Coder-Escape-Room-Backend
     ```
 
 3. Install dependencies:
@@ -42,7 +32,7 @@ React Escape Room AI Explorer is a web application built using React, Three.js, 
 
     ## For the server (Express app)
     ```bash
-    cd server
+    cd ../server
     npm install
     ```
 
@@ -62,7 +52,7 @@ Store your MongoDB connection string in a environment variable called MONGODB_UR
 
     ## For the server (Express app)
     ```bash
-    cd server
+    cd ../server
     npm start
     ```
 
