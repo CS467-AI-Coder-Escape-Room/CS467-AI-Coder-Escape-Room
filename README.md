@@ -42,7 +42,7 @@ React Escape Room AI Explorer is a web application built using React, Three.js, 
 
     ## For the server (Express app)
     ```bash
-    cd ./server
+    cd server
     npm install
     ```
 
@@ -62,7 +62,7 @@ Stor your MongoDB connection string to a constant variable called MONGODB_URI st
 
     ## For the server (Express app)
     ```bash
-    cd ./server
+    cd server
     npm start
     ```
 
