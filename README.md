@@ -12,23 +12,23 @@ React Escape Room AI Explorer is a web application built using React, Three.js, 
 
 ## Installation and Setup
 1. Clone the repository
-    ## For the server (React app)
+    ## For the client (React app)
     ```bash
     git clone https://github.com/yourusername/CS467-AI-Coder-Escape-Room.git
     ```
 
-    ## For the server (React app)
+    ## For the server (Express app)
     ```bash
     git clone https://github.com/CS467-AI-Coder-Escape-Room/CS467-AI-Coder-Escape-Room-Backend.git
     ```
 
 2. Change into the project directory:
-    ## For the server (React app)
+    ## For the client (React app)
     ```bash
     cd CS467-AI-Coder-Escape-Room
     ```
 
-    ## For the server (React app)
+    ## For the server (Express app)
     ```bash
     cd CS467-AI-Coder-Escape-Room-Backend
     ```
