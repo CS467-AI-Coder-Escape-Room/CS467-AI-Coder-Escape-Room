@@ -7,6 +7,8 @@ const mongoose = require("mongoose");
 // MongoDB connection
 const URI = process.env.MONGODB_URI;
 const Score = require("../models/Score");
+// Variable to store the scores collection
+let scores = null;
 
 // Connect to MongoDB
 const client = new MongoClient(URI, {
@@ -18,19 +20,16 @@ const client = new MongoClient(URI, {
   },
 });
 
-// Variable to store the scores collection
-let scores = null;
-
 async function run() {
   try {
-    // Connect the client to ther server
+    // Connect to the MongoDB cluster
     await client.connect();
-    //Send a ping to confirm a successful
+    //Send a ping to confirm a successful connection
     await client.db("leaderboard").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB."
     );
-    // store collection
+    // store collection for later use
     scores = client.db("leaderboard").collection("scores");
   } catch (error) {
     console.log("Could not connect to MongoDB" + error);
@@ -39,7 +38,7 @@ async function run() {
 run().catch(console.dir);
 // End of MongoDB connection
 
-// // Create a new document
+// // Create a new document POST
 // router.post("/create", async (req, res) => {
 //   const newScore = new Score({
 //     initials: req.body.initials,
@@ -48,8 +47,8 @@ run().catch(console.dir);
 //   console.log(newScore);
 //   try {
 //     await scores.insertOne(newScore);
-//     console.log("Score created successfully");
-//     res.status(201).send("Score created successfully");
+//     const message = (message);
+//     res.status(201).send(message);
 //   } catch (error) {
 //     console.log("Error creating document" + error);
 //     res.status(500).send(error);
@@ -57,17 +56,17 @@ run().catch(console.dir);
 // });
 
 // Create a new document
-router.get("/create", async (req, res) => {
-  const { initials, time } = req.query;
+router.get("/create/:initials/:score", async (req, res) => {
   const newScore = new Score({
-    initials: initials,
-    time: time,
+    initials: req.params.initials,
+    time: req.params.score,
   });
   console.log(newScore);
   try {
-    await scores.insertOne(newScore);
-    console.log("Score created successfully");
-    res.status(201).send("Score created successfully");
+    const result = await scores.insertOne(newScore);
+    const message = `Score id: ${result.insertedId} created successfully`;
+    console.log(message)
+    res.status(201).send(message);
   } catch (error) {
     console.log("Error creating document" + error);
     res.status(500).send(error);
@@ -77,9 +76,9 @@ router.get("/create", async (req, res) => {
 // Read all documents
 router.get("/leaderboard", async (req, res) => {
   const query = {};
+  // sort by time ascending
   const options = {
     sort: { time: 1 },
-
   };
   const cursor = scores.find(query, options).limit(10);
   // Get all documents from the database
@@ -89,7 +88,7 @@ router.get("/leaderboard", async (req, res) => {
       res.status(404).send("No documents in database");
     } else {
       const results = await cursor.toArray();
-      console.log("Found documents");
+      console.log(`Leaderboard ${JSON.stringify(results)}`);
       res.status(200).send(results);
     }
   } catch (error) {
@@ -98,6 +97,37 @@ router.get("/leaderboard", async (req, res) => {
   }
 });
 
+// Delete all documents from the database
+router.get("/delete-all", async (req, res) => {
+  try {
+    result = await scores.deleteMany({});
+    const deletedCount = result.deletedCount;
+    const message = (`Successfully deleted ${deletedCount} documents from the Scores collection.`);
+    console.log(message);
+    res.status(200).send(message);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+// Add a dummy group of documents to the database
+router.get("/add-dummy-scores", async (req, res) => {
+  const newScores = [
+    {initials:"HHH",time:500},{initials:"KKK",time:850},
+    {initials:"DDD",time:900},{initials:"BBB",time:1000},
+    {initials:"AAA",time:1200},{initials:"\"LLL\"",time:1468},
+    {initials:"CCC",time:1500},{initials:"GGG",time:1900},
+    {initials:"III",time:2000},{initials:"FFF",time:2120}];
+  try {
+    const result = await scores.insertMany(newScores);
+    console.log(`Inserted ${result.insertedCount} dummy scores`)
+    res. status(201).json({insertedCount: result.insertedCount, insertedIds: result.insertedIds});
+  } catch (error) {
+    console.log(error);
+  }
+});
+  
+// on cleanup close connection to the database
 const cleanup = (event) => {
   client.close();
   console.log("Connection closed");
