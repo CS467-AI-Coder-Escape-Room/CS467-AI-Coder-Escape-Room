@@ -10,7 +10,7 @@ import axios from "axios";
 //   // Create a new document
 //   try {
 //     const response = await axios.post(
-//       "http://localhost:8000/database/create",
+//       "https://ai-coder-server.superindependentmedia.com/database/create",
 //       document,
 //       {
 //         headers: {
@@ -28,7 +28,7 @@ import axios from "axios";
 const TestRead = async () => {
   // Find document
   try {
-    const response = await axios.get("http://localhost:8000/database/leaderboard");
+    const response = await axios.get("https://ai-coder-server.superindependentmedia.com/database/leaderboard");
     console.log(response.data);
   } catch (error) {
     console.error("Error fetching data: ", error);
