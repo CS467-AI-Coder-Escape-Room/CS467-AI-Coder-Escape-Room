@@ -1,5 +1,7 @@
 import { useEffect } from "react";
-import logo from "./logo.svg";
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import StartScreen from './components/StartScreen/StartScreen.component.tsx';
 import "./App.css";
 import axios from "axios";
 
@@ -41,22 +43,13 @@ function App() {
   }, []);
 
   return (
-    <div classinitials="App">
-      <header classinitials="App-header">
-        <img src={logo} classinitials="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          classinitials="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<StartScreen />} />
+        {/* <Route path="/escape-room" element={<EscapeRoom />} />
+        <Route path="/leaderboard" element={<Leaderboard />} /> */}
+      </Routes>
+    </Router>
   );
 }
 

@@ -57,7 +57,7 @@ cd CS467-AI-Coder-Escape-Room
 The React app will be available at http://localhost:3000, and the Express.js backend will run on http://localhost:8000.
 
 ## How to Play
-To play the game, simply visit the website and click on the "Start Game" button to start the escape room experience. You will then be prompted to create a username and password. Once you have created a username and password, you can start playing the game. The game is divided into a series of rooms. Each room contains a puzzle that you must solve in order to progress to the next room. The puzzles are designed to be challenging, but they are also fair. Complete the escape room by solving all the puzzles and challenges. After you've escaped, check the leaderboard to compare your performance with other players.
+To play the game, simply visit the website and click on the "Start Game" button to start the escape room experience. The room you have entered contains a puzzle that you must solve in order to win. The puzzles are designed to be challenging, but they are also fair. Complete the escape room by solving all the puzzles and challenges. After you've escaped, check the leaderboard to compare your performance with other players.
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.

@@ -24,6 +24,17 @@
   color: white;
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  background: radial-gradient(circle at center, #1B5E20, #388E3C, #4CAF50, #81C784, #C8E6C9);
+}
+
 .App-link {
   color: #61dafb;
 }
