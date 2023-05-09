@@ -10,12 +10,18 @@ const PORT = process.env.PORT || 8000;
 // Middleware
 app.use(express.json());
 app.use(cors());
-app.use('/database', databaseRouter)
+app.use('/database', databaseRouter);
 
 // Routes
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("The server is running!");
 });
+
+// Health check AWS Elastic Beanstalk
+app.get('/health', (req, res) => {
+  res.sendStatus(200);
+});
+
 
 // Start server
 app.listen(PORT, () => {

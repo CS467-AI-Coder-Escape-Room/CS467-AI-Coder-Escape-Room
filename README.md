@@ -12,16 +12,16 @@ React Escape Room AI Explorer is a web application built using React, Three.js, 
 
 ## Installation and Setup
 1. Clone the repository
-
-```bash
-git clone https://github.com/yourusername/CS467-AI-Coder-Escape-Room.git
-```
+    ## For the client (React app)
+    ```bash
+    git clone https://github.com/yourusername/CS467-AI-Coder-Escape-Room.git
+    ```
 
 2. Change into the project directory:
-
-```bash
-cd CS467-AI-Coder-Escape-Room
-```
+    ## For the client (React app)
+    ```bash
+    cd CS467-AI-Coder-Escape-Room
+    ```
 
 3. Install dependencies:
     ## For the client (React app)
@@ -41,6 +41,8 @@ cd CS467-AI-Coder-Escape-Room
 * For a local MongoDB database, follow the instructions [here](https://docs.mongodb.com/manual/installation/) and update the connectionString in the server's .env file to match your local database.
 * For a MongoDB Atlas database, follow the instructions [here](https://docs.atlas.mongodb.com/getting-started/) and update the connectionString in the server's .env file to match your Atlas database.
 
+Store your MongoDB connection string in a environment variable called MONGODB_URI in a .env file in the server directory.
+
 5. Start the development servers:
     ## For the client (React app)
     ```bash
@@ -54,7 +56,7 @@ cd CS467-AI-Coder-Escape-Room
     npm start
     ```
 
-The React app will be available at http://localhost:3000, and the Express.js backend will run on http://localhost:8000.
+The React app will be available at http://localhost:3000, and the Express.js backend will run in process.env.PORT or by default  http://localhost:8000.
 
 ## How to Play
 To play the game, simply visit the website and click on the "Start Game" button to start the escape room experience. The room you have entered contains a puzzle that you must solve in order to win. The puzzles are designed to be challenging, but they are also fair. Complete the escape room by solving all the puzzles and challenges. After you've escaped, check the leaderboard to compare your performance with other players.
