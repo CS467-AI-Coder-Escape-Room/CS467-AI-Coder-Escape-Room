@@ -65,7 +65,7 @@ router.get("/create/:initials/:score", async (req, res) => {
   try {
     const result = await scores.insertOne(newScore);
     const message = `Score id: ${result.insertedId} created successfully`;
-    console.log(message)
+    console.log(message);
     res.status(201).send(message);
   } catch (error) {
     console.log("Error creating document" + error);
@@ -102,7 +102,7 @@ router.get("/delete-all", async (req, res) => {
   try {
     result = await scores.deleteMany({});
     const deletedCount = result.deletedCount;
-    const message = (`Successfully deleted ${deletedCount} documents from the Scores collection.`);
+    const message = `Successfully deleted ${deletedCount} documents from the Scores collection.`;
     console.log(message);
     res.status(200).send(message);
   } catch (error) {
@@ -113,20 +113,33 @@ router.get("/delete-all", async (req, res) => {
 // Add a dummy group of documents to the database
 router.get("/add-dummy-scores", async (req, res) => {
   const newScores = [
-    {initials:"HHH",time:500},{initials:"KKK",time:850},
-    {initials:"DDD",time:900},{initials:"BBB",time:1000},
-    {initials:"AAA",time:1200},{initials:"\"LLL\"",time:1468},
-    {initials:"CCC",time:1500},{initials:"GGG",time:1900},
-    {initials:"III",time:2000},{initials:"FFF",time:2120}];
+    { initials: "AAA", time: 1200 },
+    { initials: "BBB", time: 1000 },
+    { initials: "CCC", time: 1500 },
+    { initials: "DDD", time: 900 },
+    { initials: "EEE", time: 1468 },
+    { initials: "FFF", time: 2120 },
+    { initials: "GGG", time: 1900 },
+    { initials: "HHH", time: 500 },
+    { initials: "III", time: 2000 },
+    { initials: "JJJ", time: 850 },
+    { initials: "KKK", time: 1468 },
+    { initials: "LLL", time: 4521 },
+  ];
   try {
     const result = await scores.insertMany(newScores);
-    console.log(`Inserted ${result.insertedCount} dummy scores`)
-    res. status(201).json({insertedCount: result.insertedCount, insertedIds: result.insertedIds});
+    console.log(`Inserted ${result.insertedCount} dummy scores`);
+    res
+      .status(201)
+      .json({
+        insertedCount: result.insertedCount,
+        insertedIds: result.insertedIds,
+      });
   } catch (error) {
     console.log(error);
   }
 });
-  
+
 // on cleanup close connection to the database
 const cleanup = (event) => {
   client.close();
