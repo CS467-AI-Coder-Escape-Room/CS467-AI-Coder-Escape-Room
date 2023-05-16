@@ -1,4 +1,4 @@
-import { useAnimations, useGLTF, OrbitControls } from '@react-three/drei'
+import { useAnimations, OrbitControls, Text } from '@react-three/drei'
 import { useControls } from 'leva'
 import { useEffect, useRef, useState } from 'react'
 import { useFrame, useLoader, useThree } from '@react-three/fiber'
@@ -8,31 +8,121 @@ import * as THREE from 'three'
 
 export default function Room()
 {
-    // const room = useGLTF('./RoomTest (drawer + no textures).glb')
-    const gltf = useLoader(GLTFLoader, './RoomTest (drawer + no textures).glb')
+    // Mesh objects
+    let boxKey
+    let lockKey
+    let pliers
+    let handSaw
+    let topboxcover
+    let lock
+    let deskDoor
+    let wrench
+    let newTextContent
+    let prevTextContent
+    let numPushed
+    let redWire
+    let blueWire
+    let purpleWire
+    let redWireSocket
+    let blueWireSocket
+    let purpleWireSocket
+    let redWireInstalled
+    let blueWireInstalled
+    let purpleWireInstalled
+
+    const gltf = useLoader(GLTFLoader, './Room1_version4 (no textures).glb')
     const animations = useAnimations(gltf.animations, gltf.scene)
     const controlsRef = useRef()
+    const [textData, setTextData] = useState({ position: [0, 0, 0], rotation: [0, 0, 0], content: '', fontSize: '0.2' });
     const fixedTargetHeight = 0.5;
-    const { scene, camera } = useThree()
+    const { scene, camera, size } = useThree()
 
-    let key
-    let pliers
+    // Animation states
+    const [currentAnimation1, setCurrentAnimation1] = useState('');
+    const [currentAnimation2, setCurrentAnimation2] = useState('');
+    const [keyAnimation, setKeyAnimation] = useState('');
 
-    // Camera shots for click events
+    // Camera states
+    const [lockCameraState, setCameraState] = useState(false)
+    const [deskDoorCameraState, setDeskDoorCameraState] = useState(false)
+    const [ventCameraState, setVentCameraState] = useState(false)
+    const [keyPadCameraState, setKeyPadCameraState] = useState(false)
+
+    // Interactions states
+    const [boxKeyGet, setBoxKeyGet] = useState(false)
+    const [lockKeyGet, setLockKeyGet] = useState(false)
+    const [pliersGet, setPliersGet] = useState(false)
+    const [handSawGet, setHandSawGet] = useState(false)
+    const [wrenchGet, setWrenchGet] = useState(false) 
+
+    const [topboxcoverRemove, setTopboxcoverRemove] = useState(false)
+    const [deskDoorRemove, setDeskDoorRemove] = useState(false)
+    const [ventRemove, setVentRemove] = useState(false)
+    const [lockUnlocked, setLockUnlocked] = useState(false)
+    const [boxDoorOpen, setBoxDoorOpen] = useState(false)
+
+    const [redWireGet, setRedWireGet] = useState(false)
+    const [blueWireGet, setBlueWireGet] = useState(false)
+    const [purpleWireGet, setPurpleWireGet] = useState(false)
+    const [redWireInstall, setRedWireInstall] = useState(false)
+    const [blueWireInstall, setBlueWireInstall] = useState(false)
+    const [purpleWireInstall, setPurpleWireInstall] = useState(false)
+
+    const [exitLight, setExitLight] = useState('red')
+    const [computerLight, setComputerLight] = useState(false)
+
+    const [keyPadCode, setKeyPadCode] = useState('9')
+    const [textContent, setTextContent] = useState('')
+    const [previousTextContent, setPreviousTextContent] = useState('')
+
+    // Camera positions and rotations for zooms
+    const cameraResetPosition = new THREE.Vector3( -0.06926893566059328, 1.843472046827195, -5.709361840619253 );
+    const cameraResetRotation = new THREE.Euler( -2.829274134118383, -0.01154507908011045, -3.1378650112042954 );
+
     const newTableCameraPosition = new THREE.Vector3( 4.496384912116336, 2.635625315481801, 0.02291382377622216 );
-    const newTableCameraRotation = new THREE.Euler( -1.5894736626573862, -1.2378020736780768, -1.5851845136563376);
+    const newTableCameraRotation = new THREE.Euler( -1.5894736626573862, -1.2378020736780768, -1.5851845136563376 );
 
     const newDrawerCameraPosition = new THREE.Vector3( -4.679039321772094, 3.9651647259301255, 6.788425620434609 ); 
-    const newDrawerCameraRotation = new THREE.Euler( -2.386476455624608, -0.004641904539556792, -3.1372237424982106);
+    const newDrawerCameraRotation = new THREE.Euler( -2.386476455624608, -0.004641904539556792, -3.1372237424982106 );
 
     const newShelfCameraPosition = new THREE.Vector3( 5.014328628180679, 4.402251395113069, 5.601074182861293 );
     const newShelfCameraRotation = new THREE.Euler( -2.8057966888937824, -0.8977252150823338, -2.8751820107698096);
 
+    const newPlantCameraPosition = new THREE.Vector3( -4.755676605410579, 0.865036453735603, -7.527622694172464 );
+    const newPlantCameraRotation = new THREE.Euler( -0.6556217703670302, 0.9260551430403319, 0.5511712168105547 );
+
+    const newSideShelfCameraPosition = new THREE.Vector3( -4.639246245178541, 0.7719513284370226, -3.157401538369389 );
+    const newSideShelfCameraRotation = new THREE.Euler( -0.32094348133461087, 1.5141768175720771, 0.3204637032507181 );
+
+    const newChairCameraPosition = new THREE.Vector3( -4.316993714990482, 0.9204541414313722, -0.22765768911738507 );
+    const newChairCameraRotation = new THREE.Euler( -1.5223077720819007, 1.4845717918630796, 1.5221272486614614 );
+
+    const newBookShelfCameraPosition = new THREE.Vector3( -4.440021282766038, 3.631297169663439, 3.082209493517963 );
+    const newBookShelfCameraRotation = new THREE.Euler( -1.5348675468861763, 1.3213671099535325, 1.533721203640851 );
+
+    const newDeskDoorCameraPosition = new THREE.Vector3( 1.67370327875466, 1.0559968440133867, -6.261741731159207 );
+    const newDeskDoorCameraRotation = new THREE.Euler( -0.12484858175236457, 0.14669417639408033, 0.01834229886611553 );
+
+    const newComputerCameraPosition = new THREE.Vector3( -0.09433258455693655, 2.5097418484663296, -8.095565398626269 );
+    const newComputerCameraRotation = new THREE.Euler( -0.3179813807862224, -0.013501405671262543, -0.004443831485319126 );
+
+    const newSmallTableCameraPosition = new THREE.Vector3( 6.256499479865508, 2.350458406143151, -8.150087483557986 );
+    const newSmallTableCameraRotation = new THREE.Euler( -0.7591234789000862, -0.6469471160292768, -0.5194885702383707 );
+
+    const newVentCameraPosition = new THREE.Vector3( 6.535606617614529, 1.5261178437031602, -4.376887196434631 );
+    const newVentCameraRotation = new THREE.Euler( -1.5694297208914907, -1.0070450275110723, -1.5691795329131764 );
+
+    const newTopDownBoxCameraPosition = new THREE.Vector3( 7.034827654881473, 2.7007073874092655, -8.86137344421538 );
+    const newTopDownBoxCameraRotation = new THREE.Euler( -1.552946570062933, -0.017249092028839477, -0.7682084630509974 );
+
+    const newControlPanelCameraPosition = new THREE.Vector3( 1.3896542961631408, 3.0458120484571434, -8.908578149082352 );
+    const newControlPanelCameraRotation = new THREE.Euler( -0.3677967747132039, 0.0022281911633523313, 0.000858589423393613 );
+
+    const newKeyPadCameraPosition = new THREE.Vector3( 1.6048553172389857, 3.2745764543205977, 10.833313439314118 );
+    const newKeyPadCameraRotation = new THREE.Euler( -3.0905092603670345, -0.011627525815059462, -3.140998176381731 );
+
     const raycaster = new Raycaster();
     const mouse = new Vector2();
-
-    let keyGet = false
-    let pliersGet = false
 
     // Raycasting click event handler
     const handleClick = (event) => {
@@ -47,58 +137,358 @@ export default function Room()
             intersectsArray.push(intersectedObject)
         }
 
+        // console.log(animations.clips)
+
+        // Current states for testing
+        // console.log("Camera Lock: ", lockCameraState);
+        // console.log("Topboxcover Remove: ", topboxcoverRemove);
+        // console.log("boxKeyGet: ", boxKeyGet);
+        // console.log("lockKeyGet: ", lockKeyGet);
+        // console.log("pliersGet: ", pliersGet);
+        // console.log("handSawGet: ", handSawGet);
+        // console.log("deskDoorRemove: ", deskDoorRemove);
+        // console.log("wrenchGet: ", wrenchGet);
+        // console.log("ventRemove: ", ventRemove);
+        // console.log("lockUnlocked: ", lockUnlocked);
+
+        // Text position
+        // Calculate 3D coordinates in the range of [-1, 1]
+        // const x = (event.clientX / size.width) / 2;
+        // const y = -(event.clientY / size.height) / 2;
+
+        // Log camera position and intersects
+        // console.log(intersectsArray)
+        // console.log(camera.position)
+        // console.log(camera.rotation)
+        // console.log(animations);
+
+        // Disable orbit controls
         controlsRef.current.enabled = false
 
-        // Zoom to table
-        if (intersectsArray.includes('Cube002'))
-        {
-            console.log("Clicked on table");
-            camera.position.copy( newTableCameraPosition )
-            camera.rotation.copy( newTableCameraRotation );
-            // Get key
-            if (intersectsArray.includes('Circle001'))
-            {
-                console.log("Clicked on key");
-                if (!keyGet) {
-                    key.parent.remove(key)
-                    keyGet = true
+        switch (true) {
+            // Get handsaw
+            case intersectsArray.includes('Hand_saw_handle') || intersectsArray.includes('Hand_saw_blade'):
+                handSaw.parent.remove(handSaw);
+                setHandSawGet(true);
+                camera.position.copy(newDrawerCameraPosition);
+                camera.rotation.copy(newDrawerCameraRotation);
+                break;
+            // Get lock key
+            case intersectsArray.includes('LockKey') && ventRemove:
+                lockKey.parent.remove(lockKey);
+                setLockKeyGet(true);
+                break;
+            // Get box key
+            case intersectsArray.includes('BoxKey_1') && boxDoorOpen:
+                boxKey.parent.remove(boxKey);
+                setBoxKeyGet(true);
+                break;
+            // Get wrench
+            case intersectsArray.includes('WrenchBody') && deskDoorRemove:
+                wrench.parent.remove(wrench);
+                setWrenchGet(true);
+                break;
+            // Get red wire
+            case intersectsArray.includes('Loose_red_wire_1'):
+                if (!redWireGet) {
+                  redWire.parent.remove(redWire);
+                  redWireSocket.parent.remove(redWireSocket);
+                  setRedWireGet(true);
                 }
-            }
-        } 
-        // Zoom to drawer
-        else if (intersectsArray.includes('Cube007'))
-        {
-            console.log("Clicked on drawer");
-            camera.position.copy( newDrawerCameraPosition );
-            camera.rotation.copy( newDrawerCameraRotation );
-        }
-        // Zoom to shelf
-        else if (intersectsArray.includes('Plane001'))
-        {
-            console.log("Clicked on shelf");
-            camera.position.copy( newShelfCameraPosition );
-            camera.rotation.copy( newShelfCameraRotation );
+                break;
+            // Get blue wire
+            case intersectsArray.includes('Loose_blue_wire_1'):
+                if (!blueWireGet) {
+                  blueWireSocket.parent.remove(blueWireSocket);
+                  blueWire.parent.remove(blueWire);
+                  setBlueWireGet(true);
+                }
+                break;
+            // Get purple wire
+            case intersectsArray.includes('Loose_purple_wire_1'):
+                if (!purpleWireGet) {
+                  purpleWireSocket.parent.remove(purpleWireSocket);
+                  purpleWire.parent.remove(purpleWire);
+                  setPurpleWireGet(true);
+                }
+                break;
+            // Open box
+            case intersectsArray.includes('topboxcover') && boxKeyGet:
+                console.log('OPENED BOX');
+                topboxcover.parent.remove(topboxcover);
+                setTopboxcoverRemove(true);
+                break;
             // Get pliers
-            if (intersectsArray.includes('Cylinder'))
-            {
-                console.log("Clicked on pliers");
+            case intersectsArray.includes('Pliers') && intersectsArray.includes('bottom') && topboxcoverRemove:
                 if (!pliersGet) {
-                    pliers.parent.remove(pliers)
-                    pliersGet = true
+                  pliers.parent.remove(pliers);
+                  setPliersGet(true);
                 }
-            }
-        }
-        // Open pet door
-        else if (intersectsArray.includes('Door'))
-        {
-            console.log("Clicked on door");
-            // animationActions[0].play()
-        }
-        else {
-            controlsRef.current.enabled = true
+                break;
+            // Unlock lock
+            case intersectsArray.includes('Lock') && lockKeyGet:
+                lock.parent.remove(lock);
+                setLockUnlocked(true);
+                break;
+            // Open box door
+            case intersectsArray.includes('Door') && lockUnlocked:
+                setCurrentAnimation1('DoorAction')
+                setBoxDoorOpen(true)
+                break;
+            // Zoom to top of box after cover is removed
+            case intersectsArray.includes('front') && topboxcoverRemove:
+                setCameraState(true);
+                camera.position.copy(newTopDownBoxCameraPosition);
+                camera.rotation.copy(newTopDownBoxCameraRotation);
+                break;
+            // Zoom to table
+            case intersectsArray.includes('wooden_table'):
+                setCameraState(true);
+                camera.position.copy(newTableCameraPosition);
+                camera.rotation.copy(newTableCameraRotation);
+                if (intersectsArray.includes('BoxKey')) {
+                  if (!boxKeyGet) {
+                    boxKey.parent.remove(boxKey);
+                    setBoxKeyGet(true);
+                  }
+                }
+                break;
+            // Zoom to drawer
+            case intersectsArray.includes('Drawer'):
+                setCameraState(true)
+                camera.position.copy(newDrawerCameraPosition);
+                camera.rotation.copy(newDrawerCameraRotation);
+                if (intersectsArray.includes('DrawerHandle')) {
+                  setCurrentAnimation1('Hand SawAction');
+                  setCurrentAnimation2('OpenTopDrawer');
+                }
+                break;
+            // Zoom to shelf
+            case intersectsArray.includes('Plane001'):
+                setCameraState(true);
+                camera.position.copy(newShelfCameraPosition);
+                camera.rotation.copy(newShelfCameraRotation);
+                break;
+            // Zoom to plant
+            case intersectsArray.includes('plant002') || intersectsArray.includes('plant002_2'):
+                setCameraState(true);
+                camera.position.copy(newPlantCameraPosition);
+                camera.rotation.copy(newPlantCameraRotation);
+                break;
+            // Zoom to Sideboard Shelf
+            case intersectsArray.includes('Wall_Book_Shelf'):
+                setCameraState(true);
+                camera.position.copy(newSideShelfCameraPosition);
+                camera.rotation.copy(newSideShelfCameraRotation);
+                break;
+            // Zoom to chair
+            case intersectsArray.includes('prop_chair_karlstad'):
+                setCameraState(true);
+                camera.position.copy(newChairCameraPosition);
+                camera.rotation.copy(newChairCameraRotation);
+                break;
+            // Zoom to book shelf
+            case intersectsArray.includes('Wall_Book_Shelf'):
+                setCameraState(true);
+                camera.position.copy(newBookShelfCameraPosition);
+                camera.rotation.copy(newBookShelfCameraRotation);
+                break;
+            // Zoom to desk door
+            case intersectsArray.includes('deskdoor'):
+                setCameraState(true);
+                camera.position.copy(newDeskDoorCameraPosition);
+                camera.rotation.copy(newDeskDoorCameraRotation);
+                if (handSawGet && deskDoorCameraState) {
+                  deskDoor.parent.remove(deskDoor);
+                  setDeskDoorRemove(true);
+                } else {
+                  setTextData({
+                    position: [1, 0.5, -8],
+                    rotation: [-0.5, 0, 0],
+                    content: "It's locked, \nbut the wood seems weak...",
+                    fontSize: 0.05,
+                  });
+                }
+                setDeskDoorCameraState(true);
+                break;
+            // Zoom to computer
+            case intersectsArray.includes('Computer_1'):
+                setCameraState(true);
+                camera.position.copy(newComputerCameraPosition);
+                camera.rotation.copy(newComputerCameraRotation);
+                break;
+            // Zoom to small table
+            case intersectsArray.includes('Small_Table_Top') || intersectsArray.includes('Small_Table_Legs') && !topboxcoverRemove:
+                setCameraState(true);
+                camera.position.copy(newSmallTableCameraPosition);
+                camera.rotation.copy(newSmallTableCameraRotation);
+                break;
+            // Zoom to box
+            case intersectsArray.includes('topboxcover'):
+                setCameraState(true);
+                camera.position.copy(newTopDownBoxCameraPosition);
+                camera.rotation.copy(newTopDownBoxCameraRotation);
+                setTextData({
+                  position: [6.56, 1.88, -8.56],
+                  rotation: [-0.5 * Math.PI, 0, -0.8],
+                  content: "It's locked...\nthere's definitely something important in here",
+                  fontSize: 0.02,
+                });
+                break;
+            // Zoom to vent
+            case intersectsArray.includes('small_vent_1'):
+                setCameraState(true);
+                camera.position.copy(newVentCameraPosition);
+                camera.rotation.copy(newVentCameraRotation);
+                if (ventCameraState && wrenchGet) {
+                  setCurrentAnimation1('small ventAction');
+                  setVentRemove(true);
+                }
+                setVentCameraState(true)
+                break;
+            // Zoom to control panel
+            case intersectsArray.includes('Control_Panel'):
+                setCameraState(true);
+                camera.position.copy(newControlPanelCameraPosition);
+                camera.rotation.copy(newControlPanelCameraRotation);
+                if (intersectsArray.includes('LeftPort') && redWireGet && pliersGet) {
+                  setRedWireInstall(true)
+                }
+                // Place blue wire
+                if (intersectsArray.includes('RightPort') && blueWireGet && pliersGet) {
+                  setBlueWireInstall(true)
+                }
+                // Place purple wire
+                if (intersectsArray.includes('MiddlePort') && purpleWireGet && pliersGet) {
+                  setPurpleWireInstall(true)
+                }
+                break;
+            // Zoom to key pad
+            case intersectsArray.includes('KeyPad'):
+                setCameraState(true);
+                camera.position.copy(newKeyPadCameraPosition);
+                camera.rotation.copy(newKeyPadCameraRotation);
+                // setPreviousTextContent(textContent)
+                if (keyPadCameraState) {
+                  setTextData({
+                    position: [1.608, 3.3, 11],
+                    rotation: [0, Math.PI, 0],
+                    content: textContent,
+                    fontSize: 0.01,
+                  });
+                  numPushed = ''
+                  switch (true) {
+                    case intersectsArray.includes('Num_0'):
+                        setKeyAnimation('Press_0');
+                        numPushed = '0'
+                        break;
+                    case intersectsArray.includes('Num_1'):
+                        setKeyAnimation('Press_1');
+                        numPushed = '1'
+                        break;
+                    case intersectsArray.includes('Num_2'):
+                        setKeyAnimation('Press_2');
+                        numPushed = '2'
+                        break;
+                    case intersectsArray.includes('Num_3'):
+                        setKeyAnimation('Press_3');
+                        numPushed = '3'
+                        break;
+                    case intersectsArray.includes('Num_4'):
+                        setKeyAnimation('Press_4');
+                        numPushed = '4'
+                        break;
+                    case intersectsArray.includes('Num_5'):
+                        setKeyAnimation('Press_5');
+                        numPushed = '5'
+                        break;
+                    case intersectsArray.includes('Num_6'):
+                        setKeyAnimation('Press_6');
+                        numPushed = '6'
+                        break;
+                    case intersectsArray.includes('Num_7'):
+                        setKeyAnimation('Press_7');
+                        numPushed = '7'
+                        break;
+                    case intersectsArray.includes('Num_8'):
+                        setKeyAnimation('Press_8');
+                        numPushed = '8'
+                        break;
+                    case intersectsArray.includes('Num_9'):
+                        setKeyAnimation('Press_9');
+                        numPushed = '9'
+                        break;
+                    case intersectsArray.includes('Back_Button'):
+                        setKeyAnimation('Press_back');
+                        numPushed = '<'
+                        break;
+                    default:
+                        numPushed = ''
+                        break;
+                  }
+
+                  if (numPushed == '<') {
+                      newTextContent = textContent.slice(0, -1)
+                      setTextContent(newTextContent)
+                  } else if (textContent.length < 4) {
+                      newTextContent = textContent + numPushed
+                      setTextContent(newTextContent)
+                  }
+                }
+                setKeyPadCameraState(true)
+                break;
+            // Door Text
+            case intersectsArray.includes('ExitDoor_5'):
+                if (exitLight === 'green') {
+                  setCurrentAnimation1('ExitAction')
+                } else {
+                  setTextData({
+                    position: [0, 4, 11],
+                    rotation: [0, Math.PI, 0],
+                    content: 'The door seems to be locked...',
+                    fontSize: 0.2,
+                  });
+                }
+                break;
+            // Default case - return to center camera
+            default:
+                if (!lockCameraState) {
+                  controlsRef.current.enabled = true;
+                }
+                break;
         }
     }
 
+    // update key pad if changed
+    // if (previousTextContent != textContent) {
+    //   setTextData({
+    //     position: [1.608, 3.3, 11],
+    //     rotation: [0, Math.PI, 0],
+    //     content: textContent,
+    //     fontSize: 0.01,
+    //   });
+    // }
+
+    // Handle camera state
+    const handleKeyDown = (event) => {
+        if (event.key === 'Escape') {
+            setCameraState(false);
+          //   camera.position.copy( cameraResetPosition )
+          //   camera.rotation.copy( cameraResetRotation )
+          //   setTextData({ position: [0, 0, 0], rotation: [0, 0, 0], content: '', fontSize: 0.2 });
+            setKeyPadCameraState(false)
+            console.log("BACK");
+        }
+      };
+
+    useEffect(() => {
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }, []);
+
+    // Prevent camera from clipping through floor
     useEffect(() => {
         const controls = controlsRef.current;
     
@@ -117,40 +507,198 @@ export default function Room()
     }, [controlsRef, fixedTargetHeight]);
 
     gltf.scene.traverse((object) => {
-        if (object.isMesh && object.name == 'Circle001') {
-            // console.log(object);
-            key = object
-        }
-        if (object.isMesh && object.name == 'Cylinder') {
-            pliers = object
+
+        // Set loaded mesh objects
+        if (object.isMesh) {
+            switch (object.name) {
+                case 'BoxKey_1':
+                  boxKey = object;
+                  break;
+                case 'Pliers':
+                  pliers = object;
+                  break;
+                case 'topboxcover':
+                  topboxcover = object;
+                  break;
+                case 'Lock':
+                  lock = object;
+                  break;
+                case 'Hand_saw_handle':
+                  handSaw = object;
+                  break;
+                case 'deskdoor':
+                  deskDoor = object;
+                  break;
+                case 'WrenchBody':
+                  wrench = object;
+                  break;
+                case 'LockKey':
+                  lockKey = object;
+                  break;
+                case 'Loose_red_wire_2':
+                  redWire = object;
+                  break;
+                case 'Loose_red_wire_1':
+                  redWireSocket = object;
+                  break;
+                case 'Loose_blue_wire_2':
+                  blueWire = object;
+                  break;
+                case 'Loose_blue_wire_1':
+                  blueWireSocket = object;
+                  break;
+                case 'Loose_purple_wire_2':
+                  purpleWire = object;
+                  break;
+                case 'Loose_purple_wire_1':
+                  purpleWireSocket = object;
+                  break;
+                case 'Red_Wire':
+                  redWireInstalled = object;
+                  object.visible = false;
+                  break;
+                case 'Blue_Wire':
+                  blueWireInstalled = object;
+                  object.visible = false;
+                  break;
+                case 'Purple_Wire':
+                  purpleWireInstalled = object;
+                  object.visible = false;
+                  break;
+        
+            }
         }
     })
 
-    const { animationName } = useControls({
-        animationName: { options: animations.names }
-    })
+    // Control box wire states
+    if (redWireInstall) {
+      console.log("Installed red wire");
+      redWireInstalled.visible = true;
+    }
+    if (blueWireInstall) {
+      console.log("Installed blue wire");
+      blueWireInstalled.visible = true;
+    }
+    if (purpleWireInstall) {
+      console.log("Installed purple wire");
+      purpleWireInstalled.visible = true;
+    }
+    if (redWireInstall && blueWireInstall && purpleWireInstall && !computerLight) {
+      setComputerLight(true);
+    }
+
+    // Generate random code for keypad
+    useEffect(() => {
+      const generateRandomString = () => {
+        let result = '';
+        const characters = '0123456789';
+        const length = 4;
+  
+        for (let i = 0; i < length; i++) {
+          const randomIndex = Math.floor(Math.random() * characters.length);
+          const randomCharacter = characters[randomIndex];
+          result += randomCharacter;
+        }
+        console.log("Keypad code: ", result);
+        return result;
+      };
+  
+      const generatedCode = generateRandomString();
+      setKeyPadCode(generatedCode);
+    }, []);
+
+    // Control exit light state
+    if (textContent === keyPadCode && exitLight !== 'green') {
+      setExitLight('green');
+    }
+
+    /**
+     * Animations
+     */
+
+    // Animation controls for Leva
+    // const { animationName } = useControls({
+    //     animationName: { options: animations.names }
+    // })
 
     useEffect(() =>
     {
-        const action = animations.actions[animationName]
-        action
-            .reset()
-            .fadeIn(0.5)
-            .play()
-            .setLoop(THREE.LoopOnce, 1)
-            .clampWhenFinished = true
-        return () =>
-        {
-            action.fadeOut(0.5)
-        }
-    }, [animationName])
+      if (currentAnimation1 !== '') {
+          const action = animations.actions[currentAnimation1]
+          action
+              .reset()
+              // .fadeIn(0.5)
+              .play()
+              .setLoop(THREE.LoopOnce, 1)
+              .clampWhenFinished = true
+          return () =>
+          {
+              action.fadeOut(0.5)
+          }
+      }
+    }, [currentAnimation1])
+
+    useEffect(() =>
+    {
+      if (currentAnimation2 !== '') {
+          const action = animations.actions[currentAnimation2]
+          action
+              .reset()
+              // .fadeIn(0.5)
+              .play()
+              .setLoop(THREE.LoopOnce, 1)
+              .clampWhenFinished = true
+          return () =>
+          {
+              action.fadeOut(0.5)
+          }
+      }
+    }, [currentAnimation2])
+
+    useEffect(() =>
+    {
+      if (keyAnimation !== '') {
+          const action = animations.actions[keyAnimation]
+          action
+              .reset()
+              // .fadeIn(0.5)
+              .play()
+              .setLoop(THREE.LoopOnce, 1)
+              .clampWhenFinished = false
+          return () =>
+          {
+              action.stop()
+          }
+      }
+    }, [keyAnimation])
 
     return <>
             <primitive
             object={ gltf.scene }
             onClick={ handleClick }
             />
-            <OrbitControls ref={controlsRef} enableDamping={true} enableZoom={false} enablePan={false} />
+            <OrbitControls ref={controlsRef} enableDamping={true} enableZoom={true} enablePan={true} maxDistance={8} />
+            <Text color="white" fontSize={textData.fontSize} position={textData.position} rotation={textData.rotation} text={textData.content}></Text>
+            <pointLight color="white" intensity={0.3} position={[0, 0, 0]} />
+            {/* Exit Light */}
+            <pointLight
+                position={[1.65, 5.1, 11]} // Specify the desired position
+                color={exitLight} // Set the color
+                intensity={6} // Adjust the intensity as needed
+                distance={5} // Set the distance for falloff
+                decay={5} // Set the decay rate
+                power={10} // Set the power
+            />
+            {/* Computer Light */}
+            <pointLight
+                position={[0, 2.5, -8]} // Specify the desired position
+                color={"blue"} // Set the color
+                intensity={10} // Adjust the intensity as needed
+                distance={2} // Set the distance for falloff
+                decay={2} // Set the decay rate
+                power={100} // Set the power
+                visible={computerLight}
+            />
         </>
 }
 

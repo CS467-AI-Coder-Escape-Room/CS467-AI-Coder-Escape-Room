@@ -6,12 +6,18 @@ import * as THREE from 'three'
 import { Canvas } from '@react-three/fiber'
 import EscapeRoom from './EscapeRoom';
 import reportWebVitals from './reportWebVitals';
+import Breakout from './Breakout.jsx'
+import Wordle from './Wordle';
+import FlappyBird from './FlappyBird';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
     {/* <App /> */}
+    {/* <Breakout /> */}
+    {/* < Wordle /> */}
+    {/* <FlappyBird /> */}
     <Canvas
       className="webgl"
       onCreated={({ gl }) => {
@@ -19,11 +25,12 @@ root.render(
         gl.shadowMap.type = THREE.PCFSoftShadowMap
       }}
       camera={{
-        position: [-3, 6, 3],
+        position: [0, 6, 0],
         rotation: [0, -1, 0],
         fov: 75,
         near: 0.1,
-        far: 50
+        far: 30,
+        zoom: 1.2
       }}
       resize={{ scroll: false }}
     >
