@@ -1,29 +1,35 @@
 import React, { useState } from 'react';
-import { styled } from '@mui/system';
-import { TextField, Button, Typography } from '@mui/material';
+import styled from '@mui/system/styled';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-const RootGrid = styled('div')(({ theme }) => ({
+const StyledContainer = styled('div')({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
-  minHeight: '100vh',
-  gap: theme.spacing(2),
-}));
+  height: '100vh',
+  gap: '20px',
+});
 
-const InputRow = styled('div')(({ theme }) => ({
+const StyledInputContainer = styled('div')({
   display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
+  gap: '20px',
+});
+
+const StyledBox = styled(Box)({
+  display: 'flex',
   justifyContent: 'center',
-  gap: theme.spacing(2),
-  marginBottom: theme.spacing(2),
-}));
+  marginTop: '20px',
+});
 
 const AddScore = () => {
   const [initials, setInitials] = useState('');
   const [time, setTime] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,6 +39,7 @@ const AddScore = () => {
       setInitials('');
       setTime('');
       alert('Score added successfully!');
+      navigate('/leaderboard');  // navigate to Leaderboard page
     } catch (error) {
       console.error(error);
       alert('Error adding score!');
@@ -40,16 +47,28 @@ const AddScore = () => {
   };
 
   return (
-    <RootGrid>
-      <Typography variant="h4" gutterBottom>Congratulations, you escaped!</Typography>
-      <form onSubmit={handleSubmit}>
-        <InputRow>
-          <TextField label="Initials" variant="outlined" value={initials} onChange={e => setInitials(e.target.value)} required />
-          <TextField label="Time" variant="outlined" type="number" value={time} onChange={e => setTime(e.target.value)} required />
-        </InputRow>
-        <Button type="submit" variant="contained">Add Score</Button>
-      </form>
-    </RootGrid>
+    <StyledContainer>
+      <h1>Congratulations, you escaped!</h1>
+      <StyledInputContainer>
+        <TextField
+          label="Initials"
+          variant="outlined"
+          value={initials}
+          onChange={(e) => setInitials(e.target.value)}
+        />
+        <TextField
+          label="Time"
+          variant="outlined"
+          value={time}
+          onChange={(e) => setTime(e.target.value)}
+        />
+      </StyledInputContainer>
+      <StyledBox>
+        <Button variant="contained" onClick={handleSubmit}>
+          Add Score
+        </Button>
+      </StyledBox>
+    </StyledContainer>
   );
 };
 
