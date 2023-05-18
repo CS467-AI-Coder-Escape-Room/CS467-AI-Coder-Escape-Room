@@ -56,7 +56,7 @@ const AddScore = () => {
           value={initials}
           onChange={(e) => setInitials(e.target.value)}
         />
-        <TextField
+        <TextField // Once the timer is implemented this will be passed in as a prop
           label="Time"
           variant="outlined"
           value={time}
