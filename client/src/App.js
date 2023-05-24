@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import StartScreen from './components/StartScreen/StartScreen.component.tsx';
+import AddScore from './components/AddScore/AddScore.component.tsx';
+import Leaderboard from './components/Leaderboard/Leaderboard.component.tsx';
 import "./App.css";
 import axios from "axios";
 
@@ -46,8 +48,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<StartScreen />} />
-        {/* <Route path="/escape-room" element={<EscapeRoom />} />
-        <Route path="/leaderboard" element={<Leaderboard />} /> */}
+        <Route path="/add-score" element={<AddScore />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
       </Routes>
     </Router>
   );
