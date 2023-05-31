@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import StartScreen from './components/StartScreen/StartScreen.component.tsx';
 import AddScore from './components/AddScore/AddScore.component.tsx';
 import Leaderboard from './components/Leaderboard/Leaderboard.component.tsx';
+import RoomCanvas from './components/EscapeRoom/RoomCanvas.jsx';
 import "./App.css";
 import axios from "axios";
 
@@ -50,6 +51,7 @@ function App() {
         <Route path="/" element={<StartScreen />} />
         <Route path="/add-score" element={<AddScore />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/escape-room-1" element={<RoomCanvas />} />
       </Routes>
     </Router>
   );
