@@ -1,6 +1,6 @@
 import { useAnimations, useTexture, OrbitControls, Text, useVideoTexture } from '@react-three/drei'
 import { useControls } from 'leva'
-import { useEffect, useRef, useState, useMemo } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useFrame, useLoader, useThree } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { Raycaster, Vector2 } from 'three'
