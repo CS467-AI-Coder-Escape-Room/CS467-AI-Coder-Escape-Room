@@ -27,7 +27,7 @@
     "react-three-fiber": "^6.0.13",
     "sass": "^1.62.1",
     "three": "^0.152.0",
-    "typescript": "^5.0.4",
+    "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
