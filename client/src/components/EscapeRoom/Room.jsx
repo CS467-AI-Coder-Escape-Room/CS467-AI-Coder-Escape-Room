@@ -71,7 +71,7 @@ export default function Room()
     //   });
     // }, [chairDiffuseTexture]);
 
-    const gltf = useLoader(GLTFLoader,'https://glb-file-ai-coder.s3.us-east-2.amazonaws.com/RoomFinal_5+(with+textures).glb', loader => {
+    const gltf = useLoader(GLTFLoader,'RoomFinal_5 (with textures).glb', loader => {
       loader.ignoreTextureErrors = true
     })
     const animations = useAnimations(gltf.animations, gltf.scene)
