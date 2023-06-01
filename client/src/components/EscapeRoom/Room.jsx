@@ -34,7 +34,7 @@ export default function Room()
      */
 
     // const videoRef = useRef(); // Create a ref to hold the video element
-    const videoTexture = useVideoTexture('galaga_startscreen (with effects).mp4'); // Load the video texture
+    const videoTexture = useVideoTexture(process.env.PUBLIC_URL + 'galaga_startscreen (with effects).mp4'); // Load the video texture
     videoTexture.repeat.y = -1  // Flip texture vertically
     videoTexture.offset.y = 1  // Correct texture orientation
 
@@ -71,7 +71,7 @@ export default function Room()
     //   });
     // }, [chairDiffuseTexture]);
 
-    const gltf = useLoader(GLTFLoader, 'RoomFinal_5 (with textures).glb', loader => {
+    const gltf = useLoader(GLTFLoader, process.env.PUBLIC_URL + 'RoomFinal_5 (with textures).glb', loader => {
       loader.ignoreTextureErrors = true
     })
     const animations = useAnimations(gltf.animations, gltf.scene)
