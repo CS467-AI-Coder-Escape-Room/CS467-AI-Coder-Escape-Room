@@ -7,47 +7,6 @@ import "./__room-canvas.scss";
 import { useNavigate } from 'react-router-dom';
 import Timer from "../Timer/Timer.component"
 
-// function Timer({ seconds, setSeconds, stop }) {
-//   useEffect(() => {
-//     const interval = setInterval(() => {
-//       setSeconds((seconds) => seconds + 1);
-//     }, 1000);
-
-//     // Clear the interval when stop is true
-//     if (stop) {
-//       clearInterval(interval);
-//     }
-
-//     // Clear the interval when component unmounts
-//     return () => clearInterval(interval);
-//   }, [setSeconds, stop]);
-
-//   const getFormattedTime = (totalSeconds) => {
-//     const hours = Math.floor(totalSeconds / 3600);
-//     const minutes = Math.floor((totalSeconds % 3600) / 60);
-//     const seconds = totalSeconds % 60;
-//     return `${hours.toString().padStart(2, "0")}:${minutes
-//       .toString()
-//       .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-//   };
-
-//   return (
-//     <div
-//       className="timer-text"
-//       style={{
-//         position: "fixed",
-//         top: "20px",
-//         right: "20px",
-//         fontSize: "2em",
-//         fontWeight: "bold",
-//         zIndex: 9999, // make sure the timer is always on top
-//       }}
-//     >
-//       {getFormattedTime(seconds)}
-//     </div>
-//   );
-// }
-
 function RoomCanvas() {
   const [isRoomLoaded, setIsRoomLoaded] = useState(false);
   const [seconds, setSeconds] = useState(0);
