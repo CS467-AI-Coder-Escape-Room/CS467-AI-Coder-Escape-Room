@@ -1,6 +1,17 @@
 const express = require('express');
 const path = require('path');
 const app = express();
+const mime = require('mime');
+
+mime.types['glb'] = 'model/gltf-binary';  // Add the MIME type for .glb files
+
+app.use(express.static('public', {
+  setHeaders: function (res, path) {
+    if (mime.getType(path) === 'model/gltf-binary') {
+      res.setHeader('Content-Type', 'model/gltf-binary');
+    }
+  }
+}));
 
 app.use(express.static(path.join(__dirname, '../client/build')));
 app.use(express.static(path.join(__dirname, '..', 'client', 'public')));
