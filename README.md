@@ -18,7 +18,6 @@ React Escape Room AI Explorer is a web application built using React, Three.js, 
     ```
 
 2. Change into the project directory:
-    ## For the client (React app)
     ```bash
     cd CS467-AI-Coder-Escape-Room
     ```
@@ -26,33 +25,12 @@ React Escape Room AI Explorer is a web application built using React, Three.js, 
 3. Install dependencies:
     ## For the client (React app)
     ```bash
-    cd client
     npm install
-    ```
+    ``
 
-    ## For the server (Express app)
-    ```bash
-    cd ../server
-    npm install
-    ```
-
-4. Set up your MongoDB database:
-
-* For a local MongoDB database, follow the instructions [here](https://docs.mongodb.com/manual/installation/) and update the connectionString in the server's .env file to match your local database.
-* For a MongoDB Atlas database, follow the instructions [here](https://docs.atlas.mongodb.com/getting-started/) and update the connectionString in the server's .env file to match your Atlas database.
-
-Store your MongoDB connection string in a environment variable called MONGODB_URI in a .env file in the server directory.
-
-5. Start the development servers:
+4. Start the development servers:
     ## For the client (React app)
     ```bash
-    cd client
-    npm start
-    ```
-
-    ## For the server (Express app)
-    ```bash
-    cd ../server
     npm start
     ```
 
