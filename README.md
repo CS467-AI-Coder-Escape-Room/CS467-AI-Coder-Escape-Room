@@ -11,7 +11,7 @@ React Escape Room AI Explorer is a web application built using React, Three.js, 
 - Leaderboard to showcase top players and encourage friendly competition.
 
 ## Live links
-- Escape Room UI: https://vercel.com/osu-ai-coder/cs-467-ai-coder-escape-room/HHVLy3WUTwkqEqq7hUC9ugm51xyU
+- Escape Room UI: https://cs-467-ai-coder-escape-room.vercel.app/
 - Escape Room Leaderboard API: https://ai-coder-server.superindependentmedia.com/
 
 ## Local Installation and Setup
