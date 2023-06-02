@@ -40,10 +40,10 @@ import axios from "axios";
 //   }
 // };
 
-function App() {
-  useEffect(() => {
-    TestRead();
-  }, []);
+// function App() {
+//   useEffect(() => {
+//     TestRead();
+//   }, []);
 
   return (
     <Router>
