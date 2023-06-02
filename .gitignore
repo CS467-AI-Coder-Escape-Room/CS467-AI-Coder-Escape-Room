@@ -118,6 +118,9 @@ Desktop.ini
 
 # production
 /build
+.env.build
+.vercel
+/dist
 
 # misc
 .DS_Store
