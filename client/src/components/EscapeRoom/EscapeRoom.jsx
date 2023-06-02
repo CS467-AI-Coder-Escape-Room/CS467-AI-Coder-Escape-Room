@@ -2,7 +2,7 @@ import { Perf } from 'r3f-perf'
 import { Suspense } from 'react'
 import Room from './Room.jsx'
 
-export default function EscapeRoom()
+export default function EscapeRoom({ handleEscape, setIsRoomLoaded })
 {
     return <>
         <Perf position="bottom-left" />
@@ -13,6 +13,6 @@ export default function EscapeRoom()
         {/* <Suspense fallback={ <Placeholder position-y={ 0.5 } scale={ [ 2, 3, 2 ] } /> }>
             <Hamburger scale={ 0.35 } />
         </Suspense> */}
-        <Room />
+        <Room handleEscape={handleEscape} setIsRoomLoaded={setIsRoomLoaded} />
     </>
 }

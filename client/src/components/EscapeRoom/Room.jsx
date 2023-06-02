@@ -7,7 +7,7 @@ import { Raycaster, Vector2 } from 'three'
 import * as THREE from 'three'
 import ParticleSystem from './particles';
 
-export default function Room()
+export default function Room({ handleEscape, setIsRoomLoaded })
 {
     // Mesh objects
     let boxKey
@@ -74,6 +74,11 @@ export default function Room()
     const gltf = useLoader(GLTFLoader, 'RoomFinal_5 (with textures).glb', loader => {
       loader.ignoreTextureErrors = true
     })
+
+    useEffect(() => {
+      setIsRoomLoaded(true);
+    }, []);
+
     const animations = useAnimations(gltf.animations, gltf.scene)
     const controlsRef = useRef()
     const [textData, setTextData] = useState({ position: [0, 0, 0], rotation: [0, 0, 0], content: '', fontSize: '0.2' });
@@ -555,7 +560,7 @@ export default function Room()
                 setExitDoor(true)
                 break;
             case intersectsArray.includes('Exit_Screen') && exitDoor:
-                console.log("You Escaped!");
+                handleEscape();
             // Default case - return to center camera
             default:
                 if (!lockCameraState) {

@@ -34,6 +34,15 @@ const Leaderboard = () => {
     fetchData();
   }, []);
 
+  const formatTime = (totalSeconds) => {
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    return `${hours.toString().padStart(2, "0")}:${minutes
+      .toString()
+      .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  };
+
   return (
     <RootGrid>
       <Typography variant="h4" gutterBottom>Leaderboard</Typography>
@@ -51,7 +60,7 @@ const Leaderboard = () => {
               <TableRow key={row._id}>
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{row.initials}</TableCell>
-                <TableCell>{row.time}</TableCell>
+                <TableCell>{formatTime(row.time)}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -62,3 +71,4 @@ const Leaderboard = () => {
 };
 
 export default Leaderboard;
+

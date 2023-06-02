@@ -4,7 +4,8 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const StyledContainer = styled('div')({
   display: 'flex',
@@ -28,16 +29,29 @@ const StyledBox = styled(Box)({
 
 const AddScore = () => {
   const [initials, setInitials] = useState('');
-  const [time, setTime] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+  const elapsedSeconds = location.state.elapsedSeconds;
+
+  const getFormattedTime = (totalSeconds) => {
+    console.log("totalSeconds ", totalSeconds);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    console.log(`${hours.toString().padStart(2, "0")}:${minutes
+      .toString()
+      .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`);
+    return `${hours.toString().padStart(2, "0")}:${minutes
+      .toString()
+      .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      await axios.get(`https://ai-coder-server.superindependentmedia.com/database/create/${initials}/${time}`);
+      await axios.get(`https://ai-coder-server.superindependentmedia.com/database/create/${initials}/${elapsedSeconds}`);
       setInitials('');
-      setTime('');
       alert('Score added successfully!');
       navigate('/leaderboard');  // navigate to Leaderboard page
     } catch (error) {
@@ -46,8 +60,23 @@ const AddScore = () => {
     }
   };
 
+  const theme = createTheme({
+    components: {
+      MuiTextField: {
+        styleOverrides: {
+          root: {
+            '& .MuiInputBase-input.Mui-disabled': {
+              color: 'black',
+            },
+          },
+        },
+      },
+    },
+  });
+
   return (
-    <StyledContainer>
+    <ThemeProvider theme={theme}>
+      <StyledContainer>
       <h1>Congratulations, you escaped!</h1>
       <StyledInputContainer>
         <TextField
@@ -56,11 +85,11 @@ const AddScore = () => {
           value={initials}
           onChange={(e) => setInitials(e.target.value)}
         />
-        <TextField // Once the timer is implemented this will be passed in as a prop
+        <TextField
           label="Time"
           variant="outlined"
-          value={time}
-          onChange={(e) => setTime(e.target.value)}
+          value={getFormattedTime(elapsedSeconds)}
+          disabled
         />
       </StyledInputContainer>
       <StyledBox>
@@ -69,6 +98,8 @@ const AddScore = () => {
         </Button>
       </StyledBox>
     </StyledContainer>
+    </ThemeProvider>
+    
   );
 };
 
