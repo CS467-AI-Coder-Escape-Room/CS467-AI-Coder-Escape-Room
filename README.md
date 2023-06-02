@@ -1,5 +1,5 @@
 # CS467-AI-Coder-Escape-Room
-This is the Oregon State University capstone project repo for Ryan Johns, Heather Fillerup-Miller, and Steven Ruzicka
+This is the Oregon State University capstone project client side repo for Ryan Johns, Heather Fillerup-Miller, and Steven Ruzicka
 
 # React Escape Room AI Explorer
 
@@ -10,11 +10,20 @@ React Escape Room AI Explorer is a web application built using React, Three.js, 
 - Interactive 3D escape room environment built using React and Three.js.
 - Leaderboard to showcase top players and encourage friendly competition.
 
-## Installation and Setup
+## Live links
+- Escape Room UI: https://vercel.com/osu-ai-coder/cs-467-ai-coder-escape-room/HHVLy3WUTwkqEqq7hUC9ugm51xyU
+- Escape Room Leaderboard API: https://ai-coder-server.superindependentmedia.com/
+
+## Local Installation and Setup
 1. Clone the repository
     ## For the client (React app)
     ```bash
-    git clone https://github.com/yourusername/CS467-AI-Coder-Escape-Room.git
+    git clone https://github.com/CS467-AI-Coder-Escape-Room/CS467-AI-Coder-Escape-Room.git
+    ```
+
+    ## For the database server (Express app)
+    ```bash
+    git clone https://github.com/CS467-AI-Coder-Escape-Room/cs467-ai-coder-backend.git
     ```
 
 2. Change into the project directory:
@@ -23,16 +32,14 @@ React Escape Room AI Explorer is a web application built using React, Three.js, 
     cd CS467-AI-Coder-Escape-Room
     ```
 
-3. Install dependencies:
-    ## For the client (React app)
+    ## For the database server (Express app)
     ```bash
-    cd client
-    npm install
+    cd cs467-ai-coder-backend
     ```
 
-    ## For the server (Express app)
+3. Install dependencies:
+    ## For both the client (React app) and the database server (Express app)
     ```bash
-    cd ../server
     npm install
     ```
 
@@ -43,7 +50,12 @@ React Escape Room AI Explorer is a web application built using React, Three.js, 
 
 Store your MongoDB connection string in a environment variable called MONGODB_URI in a .env file in the server directory.
 
-5. Start the development servers:
+5. Update the api calls to call your local server
+    ## For the client (React app)
+    src/components/Leaderboard/Leaderboard.component.tsxAddScore.component.tsx line 30
+    src/components/AddScore/AddScore.component.tsx line 53
+
+6. Start the development servers:
     ## For the client (React app)
     ```bash
     cd client
@@ -59,7 +71,15 @@ Store your MongoDB connection string in a environment variable called MONGODB_UR
 The React app will be available at http://localhost:3000, and the Express.js backend will run in process.env.PORT or by default  http://localhost:8000.
 
 ## How to Play
-To play the game, simply visit the website and click on the "Start Game" button to start the escape room experience. The room you have entered contains a puzzle that you must solve in order to win. The puzzles are designed to be challenging, but they are also fair. Complete the escape room by solving all the puzzles and challenges. After you've escaped, check the leaderboard to compare your performance with other players.
+To play the game, simply visit the website and click on the "Start Game" button to start the escape room experience. 
+
+When zoomed in on an object, use 'esc + mouse click' to zoom back out.
+
+The room you have entered contains a puzzle that you must solve in order to win. The puzzles are designed to be challenging, but they are also fair. 
+
+Complete the escape room by solving all the puzzles and challenges. 
+
+After you've escaped, check the leaderboard to compare your performance with other players.
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.

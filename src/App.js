@@ -29,21 +29,21 @@ import axios from "axios";
 //   }
 // };
 
-// Test funtion for finding if document exists
-const TestRead = async () => {
-  // Find document
-  try {
-    const response = await axios.get("https://ai-coder-server.superindependentmedia.com/database/leaderboard");
-    console.log(response.data);
-  } catch (error) {
-    console.error("Error fetching data: ", error);
-  }
-};
+// // Test funtion for finding if document exists
+// const TestRead = async () => {
+//   // Find document
+//   try {
+//     const response = await axios.get("https://ai-coder-server.superindependentmedia.com/database/leaderboard");
+//     console.log(response.data);
+//   } catch (error) {
+//     console.error("Error fetching data: ", error);
+//   }
+// };
 
 function App() {
-  useEffect(() => {
-    TestRead();
-  }, []);
+//   useEffect(() => {
+//     TestRead();
+//   }, []);
 
   return (
     <Router>
