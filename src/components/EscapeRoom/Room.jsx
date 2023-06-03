@@ -1,13 +1,15 @@
-import { useAnimations, useTexture, OrbitControls, Text, useVideoTexture } from '@react-three/drei'
+import { useAnimations, useTexture, OrbitControls, Text, useVideoTexture, Html } from '@react-three/drei'
 import { useControls } from 'leva'
-import { useEffect, useRef, useState } from 'react'
+import { Perf } from 'r3f-perf'
+import { useEffect, useRef, useState, Suspense } from 'react'
 import { useFrame, useLoader, useThree } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { Raycaster, Vector2 } from 'three'
 import * as THREE from 'three'
 import ParticleSystem from './particles';
+import BackButton from './BackButton'
 
-export default function Room({ handleEscape, setIsRoomLoaded })
+export default function Room()
 {
     // Mesh objects
     let boxKey
@@ -38,11 +40,6 @@ export default function Room({ handleEscape, setIsRoomLoaded })
     videoTexture.repeat.y = -1  // Flip texture vertically
     videoTexture.offset.y = 1  // Correct texture orientation
 
-    // Configure the video options
-    // videoTexture.minFilter = LinearFilter;
-    // videoTexture.magFilter = LinearFilter;
-    // videoTexture.format = RGBFormat;
-
     const VideoMaterial = new THREE.MeshStandardMaterial({
         map: videoTexture,
         toneMapped: false
@@ -71,16 +68,12 @@ export default function Room({ handleEscape, setIsRoomLoaded })
     //   });
     // }, [chairDiffuseTexture]);
 
-    const gltf = useLoader(GLTFLoader, 'RoomFinal_5 (with textures).glb', loader => {
+    const gltf = useLoader(GLTFLoader, 'RoomFinal_5 (baked textures).glb', loader => {
       loader.ignoreTextureErrors = true
     })
-
-    useEffect(() => {
-      setIsRoomLoaded(true);
-    }, []);
-
     const animations = useAnimations(gltf.animations, gltf.scene)
     const controlsRef = useRef()
+    const backButtonRef = useRef();
     const [textData, setTextData] = useState({ position: [0, 0, 0], rotation: [0, 0, 0], content: '', fontSize: '0.2' });
     const [galagaText, setGalagaTextData] = useState('')
     const fixedTargetHeight = 0.5;
@@ -132,6 +125,7 @@ export default function Room({ handleEscape, setIsRoomLoaded })
     const [position, setTextPosition] = useState([0, 0, 0]);
     const [rotation, setTextRotation] = useState([0, 0, 0]);
     const [fontSize, setTextFontSize] = useState(0.02);
+    const [backButtonVisible, setBackButtonVisible] = useState(false);
 
     // Camera positions and rotations for zooms
     const cameraResetPosition = new THREE.Vector3( -0.06926893566059328, 1.843472046827195, -5.709361840619253 );
@@ -229,25 +223,6 @@ export default function Room({ handleEscape, setIsRoomLoaded })
             intersectsArray.push(intersectedObject)
         }
 
-        // console.log(animations.clips)
-
-        // Current states for testing
-        // console.log("Camera Lock: ", lockCameraState);
-        // console.log("Topboxcover Remove: ", topboxcoverRemove);
-        // console.log("boxKeyGet: ", boxKeyGet);
-        // console.log("lockKeyGet: ", lockKeyGet);
-        // console.log("pliersGet: ", pliersGet);
-        // console.log("handSawGet: ", handSawGet);
-        // console.log("deskDoorRemove: ", deskDoorRemove);
-        // console.log("wrenchGet: ", wrenchGet);
-        // console.log("ventRemove: ", ventRemove);
-        // console.log("lockUnlocked: ", lockUnlocked);
-
-        // Text position
-        // Calculate 3D coordinates in the range of [-1, 1]
-        // const x = (event.clientX / size.width) / 2;
-        // const y = -(event.clientY / size.height) / 2;
-
         // Log camera position and intersects
         // console.log(intersectsArray)
         // console.log(camera.position)
@@ -256,6 +231,7 @@ export default function Room({ handleEscape, setIsRoomLoaded })
 
         // Disable orbit controls
         controlsRef.current.enabled = false
+        setBackButtonVisible(true)
 
         switch (true) {
             // Get handsaw
@@ -282,6 +258,7 @@ export default function Room({ handleEscape, setIsRoomLoaded })
                 break;
             // Remove Loose board
             case intersectsArray.includes('Loose_Board') && handSawGet:
+                console.log("Removed board");
                 looseBoard.visible = false
                 setLooseBoardRemove(true);
                 break;
@@ -316,7 +293,7 @@ export default function Room({ handleEscape, setIsRoomLoaded })
                 setTopboxcoverRemove(true);
                 break;
             // Get pliers
-            case intersectsArray.includes('Pliers') && intersectsArray.includes('bottom') && topboxcoverRemove:
+            case intersectsArray.includes('Pliers') || intersectsArray.includes('Right_Plier_3') || intersectsArray.includes('Left_Plier_3') && topboxcoverRemove:
                 if (!pliersGet) {
                   pliers.parent.remove(pliers);
                   setPliersGet(true);
@@ -368,7 +345,7 @@ export default function Room({ handleEscape, setIsRoomLoaded })
                 camera.rotation.copy(newShelfCameraRotation);
                 break;
             // Zoom to plant
-            case intersectsArray.includes('plant002') || intersectsArray.includes('plant002_2'):
+            case intersectsArray.includes('plant002'):
                 setCameraState(true);
                 camera.position.copy(newPlantCameraPosition);
                 camera.rotation.copy(newPlantCameraRotation);
@@ -407,7 +384,8 @@ export default function Room({ handleEscape, setIsRoomLoaded })
                 setWoodenCrateCameraState(true);
                 break;
             // Zoom to Arcade Cabinet
-            case intersectsArray.includes('Coin-op_Arcade_Game_Cabinet_Galaga_1'):
+            case intersectsArray.includes('GalagaScreen') || intersectsArray.includes('Coin-op_Arcade_Game_Cabinet_Galaga_5') 
+                                                          || intersectsArray.includes('Coin-op_Arcade_Game_Cabinet_Galaga_4')  && !topboxcoverRemove:
                 setCameraState(true);
                 camera.position.copy(newArcadeCabinetCameraPosition);
                 camera.rotation.copy(newArcadeCabinetCameraRotation);
@@ -425,13 +403,13 @@ export default function Room({ handleEscape, setIsRoomLoaded })
                 setArcadeCameraState(true)
                 break;
             // Zoom to small table
-            case intersectsArray.includes('Small_Table_Top') || intersectsArray.includes('Small_Table_Legs') && !topboxcoverRemove:
+            case intersectsArray.includes('Small_Table_Top') || intersectsArray.includes('Small_Table_Top_1') && !topboxcoverRemove:
                 setCameraState(true);
                 camera.position.copy(newSmallTableCameraPosition);
                 camera.rotation.copy(newSmallTableCameraRotation);
                 break;
             // Zoom to box
-            case intersectsArray.includes('topboxcover_2'):
+            case intersectsArray.includes('topboxcover'):
                 setCameraState(true);
                 camera.position.copy(newTopDownBoxCameraPosition);
                 camera.rotation.copy(newTopDownBoxCameraRotation);
@@ -560,7 +538,7 @@ export default function Room({ handleEscape, setIsRoomLoaded })
                 setExitDoor(true)
                 break;
             case intersectsArray.includes('Exit_Screen') && exitDoor:
-                handleEscape();
+                console.log("You Escaped!");
             // Default case - return to center camera
             default:
                 if (!lockCameraState) {
@@ -601,7 +579,7 @@ export default function Room({ handleEscape, setIsRoomLoaded })
             setBoxCameraState(false)
             // console.log("BACK");
         }
-      };
+    };
 
     useEffect(() => {
       window.addEventListener('keydown', handleKeyDown);
@@ -609,6 +587,21 @@ export default function Room({ handleEscape, setIsRoomLoaded })
         window.removeEventListener('keydown', handleKeyDown);
       };
     }, []);
+
+    // Handle camera state for back button
+    // const handleBackButton = () =>  {
+    //   setCameraState(false);
+    //   //   camera.position.copy( cameraResetPosition )
+    //   //   camera.rotation.copy( cameraResetRotation )
+    //   //   setTextData({ position: [0, 0, 0], rotation: [0, 0, 0], content: '', fontSize: 0.2 });
+    //   setDrawerCameraState(false)
+    //   setKeyPadCameraState(false)
+    //   setWoodenCrateCameraState(false)
+    //   setVentCameraState(false)
+    //   setControlPanelCameraState(false)
+    //   setArcadeCameraState(false)
+    //   setBoxCameraState(false)
+    // };
 
     // Prevent camera from clipping through floor
     useEffect(() => {
@@ -633,60 +626,60 @@ export default function Room({ handleEscape, setIsRoomLoaded })
         // Set loaded mesh objects
         if (object.isMesh) {
             switch (object.name) {
-                case 'BoxKey_1':
-                  boxKey = object;
-                  break;
-                case 'Pliers':
-                  pliers = object;
-                  break;
-                case 'Lock':
-                  lock = object;
-                  break;
-                case 'Hand_saw_handle':
-                  handSaw = object;
-                  break;
-                case 'Loose_Board':
-                  looseBoard = object;
-                  break;
-                case 'WrenchBody':
-                  wrench = object;
-                  break;
-                case 'LockKey':
-                  lockKey = object;
-                  break;
-                case 'Loose_red_wire_2':
-                  redWire = object;
-                  break;
-                case 'Loose_red_wire_1':
-                  redWireSocket = object;
-                  break;
-                case 'Loose_blue_wire_2':
-                  blueWire = object;
-                  break;
-                case 'Loose_blue_wire_1':
-                  blueWireSocket = object;
-                  break;
-                case 'Loose_purple_wire_2':
-                  purpleWire = object;
-                  break;
-                case 'Loose_purple_wire_1':
-                  purpleWireSocket = object;
-                  break;
-                case 'Red_Wire':
-                  redWireInstalled = object;
-                  object.visible = false;
-                  break;
-                case 'Blue_Wire':
-                  blueWireInstalled = object;
-                  object.visible = false;
-                  break;
-                case 'Purple_Wire':
-                  purpleWireInstalled = object;
-                  object.visible = false;
-                  break;
-                case 'GalagaScreen':
-                  galagaStartScreen = object; 
-                  break;
+              case 'BoxKey_1':
+                boxKey = object;
+                break;
+              case 'Pliers':
+                pliers = object;
+                break;
+              case 'Lock':
+                lock = object;
+                break;
+              case 'Hand_saw_handle':
+                handSaw = object;
+                break;
+              case 'Loose_Board':
+                looseBoard = object;
+                break;
+              case 'WrenchBody':
+                wrench = object;
+                break;
+              case 'LockKey':
+                lockKey = object;
+                break;
+              case 'Loose_red_wire_2':
+                redWire = object;
+                break;
+              case 'Loose_red_wire_1':
+                redWireSocket = object;
+                break;
+              case 'Loose_blue_wire_2':
+                blueWire = object;
+                break;
+              case 'Loose_blue_wire_1':
+                blueWireSocket = object;
+                break;
+              case 'Loose_purple_wire_2':
+                purpleWire = object;
+                break;
+              case 'Loose_purple_wire_1':
+                purpleWireSocket = object;
+                break;
+              case 'Red_Wire':
+                redWireInstalled = object;
+                object.visible = false;
+                break;
+              case 'Blue_Wire':
+                blueWireInstalled = object;
+                object.visible = false;
+                break;
+              case 'Purple_Wire':
+                purpleWireInstalled = object;
+                object.visible = false;
+                break;
+              case 'GalagaScreen':
+                galagaStartScreen = object; 
+                break;
                 // case 'prop_chair_karlstad':
                 //   object.material = chairCustomMaterial
                 //   break;
@@ -727,7 +720,7 @@ export default function Room({ handleEscape, setIsRoomLoaded })
           const randomCharacter = characters[randomIndex];
           result += randomCharacter;
         }
-        console.log("Keypad code: ", result);
+        // console.log("Keypad code: ", result);
         return result;
       };
   
@@ -799,17 +792,25 @@ export default function Room({ handleEscape, setIsRoomLoaded })
           }
       }
     }, [keyAnimation])
-
+ 
     return <>
+            {/* Add Performance metrics */}
+            {/* <Perf position="bottom-left" /> */}
             <primitive
-            object={ gltf.scene }
-            onClick={ handleClick }
-            // onPointerOver={ onHover }
+              object={ gltf.scene }
+              onClick={ handleClick }
+              // onPointerOver={ onHover }
             />
-            <OrbitControls ref={controlsRef} enableDamping={true} enableZoom={true} enablePan={false} maxDistance={8} />
+            {/* <BackButton 
+              handleBackButton={handleBackButton}
+              backButtonVisible={backButtonVisible}
+            /> */}
+            <OrbitControls ref={controlsRef} enableDamping={true} enableZoom={true} enablePan={false} maxDistance={8} className="POO" />
             <ParticleSystem />
             <Text color="white" fontSize={textData.fontSize} position={textData.position} rotation={textData.rotation} text={textData.content}></Text>
             <Text color="white" font={'galaga.ttf'} fontSize={galagaText.fontSize} position={galagaText.position} rotation={galagaText.rotation} text={galagaText.content}></Text>
+            <ambientLight intensity={0.5} />
+            <directionalLight castShadow position={ [ 1, 2, 3 ] } intensity={ 1 } shadow-normalBias={ 0.04 } />
             <pointLight color="white" intensity={0.3} position={[0, 0, 0]} />
             {/* Exit Light */}
             <pointLight
@@ -824,12 +825,12 @@ export default function Room({ handleEscape, setIsRoomLoaded })
             <pointLight
                 position={[0.2, 2.7, -8.2]} // Specify the desired position
                 color={"blue"} // Set the color
-                intensity={100} // Adjust the intensity as needed
+                intensity={30} // Adjust the intensity as needed
                 distance={3} // Set the distance for falloff
                 decay={2} // Set the decay rate
                 power={100} // Set the power
                 visible={arcadeLight}
             />
         </>
+        
 }
-
