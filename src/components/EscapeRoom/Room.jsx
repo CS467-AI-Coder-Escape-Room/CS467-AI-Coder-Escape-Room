@@ -527,6 +527,7 @@ export default function Room({ handleEscape, setIsRoomLoaded })
             case intersectsArray.includes('ExitDoor_4'):
                 if (exitLight === 'green') {
                   setCurrentAnimation1('ExitAction')
+                  setExitDoor(true)
                 } else {
                   setTextData({
                     position: [0, 4, 11],
@@ -535,7 +536,6 @@ export default function Room({ handleEscape, setIsRoomLoaded })
                     fontSize: 0.2,
                   });
                 }
-                setExitDoor(true)
                 break;
             case intersectsArray.includes('Exit_Screen') && exitDoor:
                 handleEscape();
