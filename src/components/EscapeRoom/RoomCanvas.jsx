@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import ReactDOM from "react-dom";
 import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
 import EscapeRoom from "./EscapeRoom";
+import { useProgress } from '@react-three/drei'
 import "./__room-canvas.scss";
 import { useNavigate } from 'react-router-dom';
 import Timer from "../Timer/Timer.component"
@@ -11,6 +12,13 @@ function RoomCanvas() {
   const [isRoomLoaded, setIsRoomLoaded] = useState(false);
   const [seconds, setSeconds] = useState(0);
   const navigate = useNavigate();
+
+  // Start timer on load
+  const { progress } = useProgress()
+  if (progress == 100 && !isRoomLoaded) { 
+    console.log("LOADED");
+    setIsRoomLoaded(true) 
+  }
 
   function handleEscape() {
     navigate("/add-score", { state: { elapsedSeconds: seconds } });
@@ -37,7 +45,9 @@ function RoomCanvas() {
         }}
         resize={{ scroll: false }}
       >
-        <EscapeRoom handleEscape={handleEscape} setIsRoomLoaded={setIsRoomLoaded} />
+        <Suspense fallback={null}>
+          <EscapeRoom handleEscape={handleEscape} setIsRoomLoaded={setIsRoomLoaded} />
+        </Suspense>
       </Canvas>
     </div>
   );

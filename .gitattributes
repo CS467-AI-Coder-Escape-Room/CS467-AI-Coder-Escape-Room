@@ -1,1 +1,2 @@
 RoomFinal_5[[:space:]](with[[:space:]]textures).glb filter=lfs diff=lfs merge=lfs -text
+RoomFinal_5[[:space:]](baked[[:space:]]textures).glb filter=lfs diff=lfs merge=lfs -text
