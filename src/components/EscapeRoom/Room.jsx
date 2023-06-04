@@ -473,7 +473,6 @@ export default function Room({ handleEscape, setIsRoomLoaded })
                     fontSize: 0.03,
                   });
                 }
-                
                 setControlPanelCameraState(true)
                 break;
             // Zoom to key pad
@@ -570,7 +569,7 @@ export default function Room({ handleEscape, setIsRoomLoaded })
             setCameraState(false);
           //   camera.position.copy( cameraResetPosition )
           //   camera.rotation.copy( cameraResetRotation )
-          //   setTextData({ position: [0, 0, 0], rotation: [0, 0, 0], content: '', fontSize: 0.2 });
+            // setTextData({ position: [0, 0, 0], rotation: [0, 0, 0], content: '', fontSize: 0.2 });
             setDrawerCameraState(false)
             setKeyPadCameraState(false)
             setWoodenCrateCameraState(false)
@@ -808,7 +807,7 @@ export default function Room({ handleEscape, setIsRoomLoaded })
             /> */}
             <OrbitControls ref={controlsRef} enableDamping={true} enableZoom={true} enablePan={false} maxDistance={8} className="POO" />
             <ParticleSystem />
-            <Text color="white" fontSize={textData.fontSize} position={textData.position} rotation={textData.rotation} text={textData.content}></Text>
+            <Text color="black" fontSize={textData.fontSize} position={textData.position} rotation={textData.rotation} text={textData.content}></Text>
             <Text color="white" font={'galaga.ttf'} fontSize={galagaText.fontSize} position={galagaText.position} rotation={galagaText.rotation} text={galagaText.content}></Text>
             <ambientLight intensity={0.5} />
             <directionalLight castShadow position={ [ 1, 2, 3 ] } intensity={ 1 } shadow-normalBias={ 0.04 } />
