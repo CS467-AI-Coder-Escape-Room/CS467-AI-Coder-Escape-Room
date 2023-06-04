@@ -9,7 +9,7 @@ import * as THREE from 'three'
 import ParticleSystem from './particles';
 import BackButton from './BackButton'
 
-export default function Room()
+export default function Room({ handleEscape, setIsRoomLoaded })
 {
     // Mesh objects
     let boxKey
@@ -538,6 +538,7 @@ export default function Room()
                 setExitDoor(true)
                 break;
             case intersectsArray.includes('Exit_Screen') && exitDoor:
+                handleEscape();
                 console.log("You Escaped!");
             // Default case - return to center camera
             default:
